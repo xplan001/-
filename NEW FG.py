@@ -4,7 +4,8 @@
 from bs4 import BeautifulSoup
 import requests
 import time
-import openpyxl
+#import openpyxl
+from openpyxl import Workbook
 
 headers = {
     'Uesr-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
@@ -40,6 +41,5 @@ def get_Book(url,data=None):
 
 for single_url in urls:
     get_Book(single_url)
-    #BookList.update(get_Book(single_url))
+    
 
-    #print(BookList)
