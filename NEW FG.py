@@ -4,8 +4,7 @@
 from bs4 import BeautifulSoup
 import requests
 import time
-#import openpyxl
-from openpyxl import Workbook
+import xlsxwriter
 
 headers = {
     'Uesr-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
@@ -26,7 +25,7 @@ def get_Book(url,data=None):
     Book_date = soup.select('div.book_item > span.book_date')
     
     #print(Book_titles,'\n',Book_version,'\n',Book_date) 
-
+    BookList = []
     for B_title,B_url,B_version,B_date in zip(Book_titles,Book_titles,Book_version,Book_date):
         data = {
             'B_title':B_title.get_text(),
@@ -35,11 +34,49 @@ def get_Book(url,data=None):
             'B_date':B_date.get_text(),
         }
 
-        print(data)
-
+        BookList.append(data)
+        # print(data)
+    return BookList
 #BookList = {}
 
-for single_url in urls:
-    get_Book(single_url)
-    
+def generate_excel(expenses):
+    workbook = xlsxwriter.Workbook('./GuiFan_data.xlsx')
+    worksheet = workbook.add_worksheet()
+ 
+    # 设定格式，等号左边格式名称自定义，字典中格式为指定选项
+    # bold：加粗，num_format:数字格式
+    bold_format = workbook.add_format({'bold': True})
+    #money_format = workbook.add_format({'num_format': '$#,##0'})
+    #date_format = workbook.add_format({'num_format': 'mmmm d yyyy'})
+ 
+    # 将二行二列设置宽度为15(从0开始)
+    worksheet.set_column(1, 1, 15)
+ 
+    # 用符号标记位置，例如：A列1行
+    worksheet.write('A1', 'Name', bold_format)
+    worksheet.write('B1', 'Urls', bold_format)
+    worksheet.write('C1', 'versions', bold_format)
+    worksheet.write('D1', 'dates', bold_format)
 
+    row = 1
+    col = 0
+    for item in (expenses):
+            # 使用write_string方法，指定数据格式写入数据
+            worksheet.write_string(row, col, str(item['B_title']))
+            worksheet.write_string(row, col + 1, item['B_url'])
+            worksheet.write_string(row, col + 2, item['B_version'])
+            worksheet.write_string(row, col + 3, item['B_date'])
+           
+            row += 1
+    workbook.close()
+
+
+if __name__ == '__main__':
+    Ls1 = []
+    for single_url in urls:
+    
+        Ls1.extend(get_Book(single_url))
+        print(len(Ls1))             #get_Book(single_url)
+    
+    print(Ls1)                # len(Ls1)Ls1get_Book(url)
+    generate_excel(Ls1)

@@ -14,8 +14,9 @@ headers = {
 
 
 url = "http://www.midasuser.cn/e/space/?userid=655998"
-#urls = ['http://www.midasuser.cn/e/space/?userid={}'.format(str(i)) for i in range(855,1019,1)]         #656019
-urls = ['http://www.midasuser.cn/e/space/?userid={}'.format(str(i)) for i in range(6501,8500,1)]
+#urls = ['http://www.midasuser.cn/e/space/?userid={}'.format(str(i)) for i in range(855,1019,1)]  
+#urls = ['http://www.midasuser.cn/e/space/?userid={}'.format(str(i)) for i in range(9501,10496,1)]
+urls = ['http://www.midasuser.cn/e/space/?userid={}'.format(str(i)) for i in range(655020,656019,1)]       #656309
 
 def get_url(url):
     web_data = requests.get(url,headers=headers)    #,data=None, data=payload
